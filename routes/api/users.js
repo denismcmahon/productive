@@ -4,13 +4,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../../model/User');
+const { ConnectionStates } = require('mongoose');
 
 /**
  * @route POST api/users/register
  * @desc Register the User
  * @access Public
  */
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   let { name, username, email, password, confirm_password } = req.body;
   if (password !== confirm_password) {
     return res.status(400).json({
@@ -18,25 +19,19 @@ router.post('/register', (req, res) => {
     });
   }
   // Check for the unique Username
-  User.findOne({
-    username: username,
-  }).then((user) => {
-    if (user) {
-      return res.status(400).json({
-        msg: 'Username is already taken',
-      });
-    }
-  });
+  const foundUserName = await User.findOne({ username: username });
+  if (foundUserName) {
+    return res.status(400).json({
+      msg: 'Username is already taken',
+    });
+  }
   // Check for the unique Email
-  User.findOne({
-    email: email,
-  }).then((email) => {
-    if (email) {
-      return res.status(400).json({
-        msg: 'Email is already registered. Did you forget your password?',
-      });
-    }
-  });
+  const foundEmail = await User.findOne({ email: email });
+  if (foundEmail) {
+    return res.status(400).json({
+      msg: 'Email is already registered. Did you forget your password?',
+    });
+  }
   // Valid data, register the user
   let newUser = new User({
     name,
