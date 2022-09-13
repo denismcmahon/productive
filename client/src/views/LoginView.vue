@@ -5,6 +5,7 @@
       <div class="card mx-auto">
         <div class="card-header text-white bg-primary">
           <h4>Login</h4>
+          <div>Name: {{ name_var }}</div>
         </div>
         <div class="card-body">
           <form @submit.prevent="loginUser">
@@ -45,6 +46,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
+      name_var: process.env.VUE_APP_NAME_VAR,
       username: '',
       password: '',
     };
