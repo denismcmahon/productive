@@ -6,6 +6,7 @@
         <div class="card-header text-white bg-primary">
           <h4>Login</h4>
           <div>Name: {{ name_var }}</div>
+          <div>City: {{ city_var }}</div>
         </div>
         <div class="card-body">
           <form @submit.prevent="loginUser">
@@ -47,6 +48,7 @@ export default {
   data() {
     return {
       name_var: process.env.VUE_APP_NAME_VAR,
+      city_var: process.env.VUE_APP_CITY_VAR,
       username: '',
       password: '',
     };
