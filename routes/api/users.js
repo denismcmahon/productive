@@ -2,9 +2,16 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const passport = require('passport');
 const key = require('../../config/keys').secret;
 const User = require('../../model/User');
+const PasswordReset = require('../../model/PasswordReset');
+
+const transporter = nodemailer.createTransport({
+  host: '0.0.0.0',
+  port: 1025,
+});
 
 /**
  * @route POST api/users/register
@@ -105,6 +112,70 @@ router.post('/login', (req, res) => {
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   return res.json({
     user: req.user,
+  });
+});
+
+/**
+ * @route POST api/users/forgot
+ * @desc Sends email for forgotten password
+ * @access Public
+ */
+router.post('/forgot', async (req, res) => {
+  const email = req.body.email;
+  const token = Math.random().toString().substring(2, 12);
+
+  const passwordReset = new PasswordReset({
+    email,
+    token,
+  });
+
+  await passwordReset.save();
+
+  const url = `http://localhost:8080/reset/${token}`;
+
+  await transporter.sendMail({
+    from: 'admin@example.com',
+    to: email,
+    subject: 'Reset your password!',
+    html: `Click <a href="${url}">here</a> to reset your password!`,
+  });
+
+  res.json({
+    msg: 'Check your mail!',
+  });
+});
+
+/**
+ * @route POST api/users/reset
+ * @desc Resets users password
+ * @access Public
+ */
+router.post('/reset', async (req, res) => {
+  if (req.body.password !== req.body.password_confirm) {
+    return res.status(400).json({
+      msg: 'Passwords do not match',
+    });
+  }
+
+  const passwordReset = await PasswordReset.findOne({ token: req.body.token });
+
+  const { email } = await passwordReset.toJSON();
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({
+      msg: 'User not found',
+    });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  user.password = await bcrypt.hash(req.body.password, salt);
+  user.save();
+
+  res.json({
+    msg: 'success',
   });
 });
 
