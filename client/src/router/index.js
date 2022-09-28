@@ -37,6 +37,11 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/forgot',
+    name: 'forgot',
+    component: () => import('../views/ForgotView.vue'),
+  },
 ];
 
 const router = createRouter({

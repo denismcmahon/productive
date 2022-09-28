@@ -121,6 +121,8 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
  * @access Public
  */
 router.post('/forgot', async (req, res) => {
+  console.log('DM ==> here in forgot route ==> req.body: ');
+  console.log(req.body);
   const email = req.body.email;
   const token = Math.random().toString().substring(2, 12);
 

@@ -66,6 +66,8 @@
             <button class="btn btn-primary">Register</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <router-link to="/login" class="card-link">Already have an account?</router-link>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <router-link to="/forgot" class="card-link">Forgot your password?</router-link>
           </form>
         </div>
       </div>

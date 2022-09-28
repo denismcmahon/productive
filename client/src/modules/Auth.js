@@ -65,6 +65,19 @@ const actions = {
     commit('user_profile', res.data.user);
     return res;
   },
+  // Send password reset mail
+  async sendResetMail({ commit }, emailData) {
+    try {
+      commit('pwresetmail_request');
+      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/forgot', emailData);
+      if (res.data.success !== undefined) {
+        commit('pwresetmail_success');
+      }
+      return res;
+    } catch (err) {
+      commit('pwresetmail_error', err);
+    }
+  },
   // Logout the user
   async logout({ commit }) {
     await localStorage.removeItem('token');
@@ -111,6 +124,17 @@ const mutations = {
   },
   user_profile(state, user) {
     state.user = user;
+  },
+  pwresetmail_request(state) {
+    state.error = null;
+    state.status = 'loading';
+  },
+  pwresetmail_success(state) {
+    state.error = null;
+    state.status = 'success';
+  },
+  pwresetmail_error(state, err) {
+    state.error = err.response.data.msg;
   },
 };
 
