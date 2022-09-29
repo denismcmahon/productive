@@ -5,7 +5,7 @@
         <h1 class="display-4">MEVN Stack</h1>
         <p class="lead">
           Simple authentication application built with MEVN Stack using Express, Node.js, Vue.js and MongoDB
-          by Codebook Inc.
+          by Denis McMahon.
         </p>
       </div>
     </div>
