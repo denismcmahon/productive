@@ -42,6 +42,11 @@ const routes = [
     name: 'forgot',
     component: () => import('../views/ForgotView.vue'),
   },
+  {
+    path: '/reset/:token',
+    name: 'reset',
+    component: () => import('../views/ResetView.vue'),
+  },
 ];
 
 const router = createRouter({

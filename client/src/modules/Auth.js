@@ -66,16 +66,29 @@ const actions = {
     return res;
   },
   // Send password reset mail
-  async sendResetMail({ commit }, emailData) {
+  async sendResetMail({ commit }, resetData) {
     try {
       commit('pwresetmail_request');
-      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/forgot', emailData);
+      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/forgot', resetData);
       if (res.data.success !== undefined) {
         commit('pwresetmail_success');
       }
       return res;
     } catch (err) {
       commit('pwresetmail_error', err);
+    }
+  },
+  // Send password reset mail
+  async resetPassword({ commit }, passwordData) {
+    try {
+      commit('passwordreset_request');
+      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/reset', passwordData);
+      if (res.data.success !== undefined) {
+        commit('passwordreset_success');
+      }
+      return res;
+    } catch (err) {
+      commit('passwordreset_error', err);
     }
   },
   // Logout the user
@@ -134,6 +147,17 @@ const mutations = {
     state.status = 'success';
   },
   pwresetmail_error(state, err) {
+    state.error = err.response.data.msg;
+  },
+  passwordreset_request(state) {
+    state.error = null;
+    state.status = 'loading';
+  },
+  passwordreset_success(state) {
+    state.error = null;
+    state.status = 'success';
+  },
+  passwordreset_error(state, err) {
     state.error = err.response.data.msg;
   },
 };

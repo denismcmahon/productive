@@ -1,46 +1,13 @@
 <template>
   <div>
-    <h2>Register</h2>
+    <h2>Reset password</h2>
     <div class="row">
       <div class="card mx-auto">
         <div class="card-header text-white bg-primary">
-          <h4>Register</h4>
+          <h4>Reset password</h4>
         </div>
         <div class="card-body">
-          <form @submit.prevent="registerUser">
-            <div class="form-group">
-              <label for="username">Username</label>
-              <input
-                id="username"
-                type="text"
-                placeholder="Username"
-                name="username"
-                v-model="username"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Name"
-                name="name"
-                v-model="name"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                placeholder="Email"
-                name="email"
-                v-model="email"
-                class="form-control"
-              />
-            </div>
+          <form @submit.prevent="resetPassword">
             <div class="form-group">
               <label for="password">Password</label>
               <input
@@ -63,9 +30,7 @@
                 class="form-control"
               />
             </div>
-            <button class="btn btn-primary">Register</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <router-link to="/login" class="card-link">Already have an account?</router-link>
+            <button class="btn btn-primary">Reset Password</button>
           </form>
         </div>
       </div>
@@ -75,27 +40,26 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { useRoute } from 'vue-router';
+
 export default {
   data() {
+    const route = useRoute();
     return {
-      username: '',
+      token: route.params.token,
       password: '',
       confirm_password: '',
-      name: '',
-      email: '',
     };
   },
   methods: {
-    ...mapActions(['register']),
-    registerUser() {
-      let user = {
-        username: this.username,
+    ...mapActions(['sendResetMail']),
+    resetPassword() {
+      let resetData = {
+        token: this.username,
         password: this.password,
         confirm_password: this.confirm_password,
-        email: this.email,
-        name: this.name,
       };
-      this.register(user).then((res) => {
+      this.sendResetMail(resetData).then((res) => {
         if (res.data.success) {
           this.$router.push('login');
         }

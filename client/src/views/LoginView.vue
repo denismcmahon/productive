@@ -33,6 +33,8 @@
             <input type="submit" class="btn btn-primary" value="Login" />
             &nbsp;&nbsp;&nbsp;&nbsp;
             <router-link to="/register" class="card-link">Need an account?</router-link>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <router-link to="/forgot" class="card-link">Forgot your password?</router-link>
           </form>
         </div>
       </div>
