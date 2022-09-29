@@ -19,7 +19,7 @@
                 class="form-control"
               />
             </div>
-            <button class="btn btn-primary">Send Mail</button>
+            <button class="btn btn-primary">Send Reset Mail</button>
             <br /><br />
             <div>
               <h6>{{ mail_msg }}</h6>
