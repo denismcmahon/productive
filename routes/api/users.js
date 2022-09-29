@@ -121,8 +121,6 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
  * @access Public
  */
 router.post('/forgot', async (req, res) => {
-  console.log('DM ==> here in forgot route ==> req.body: ');
-  console.log(req.body);
   const email = req.body.email;
   const token = Math.random().toString().substring(2, 12);
 
@@ -142,8 +140,9 @@ router.post('/forgot', async (req, res) => {
     html: `Click <a href="${url}">here</a> to reset your password!`,
   });
 
-  res.json({
-    msg: 'Check your mail!',
+  res.status(200).json({
+    success: true,
+    msg: 'Check your mail.',
   });
 });
 
@@ -153,7 +152,9 @@ router.post('/forgot', async (req, res) => {
  * @access Public
  */
 router.post('/reset', async (req, res) => {
-  if (req.body.password !== req.body.password_confirm) {
+  console.log('DM ==> reset route ==> req.body: ');
+  console.log(req.body);
+  if (req.body.password !== req.body.confirm_password) {
     return res.status(400).json({
       msg: 'Passwords do not match',
     });
@@ -176,8 +177,9 @@ router.post('/reset', async (req, res) => {
   user.password = await bcrypt.hash(req.body.password, salt);
   user.save();
 
-  res.json({
-    msg: 'success',
+  res.status(200).json({
+    success: true,
+    msg: 'Successfully changed password.',
   });
 });
 

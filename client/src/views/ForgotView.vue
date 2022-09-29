@@ -20,6 +20,10 @@
               />
             </div>
             <button class="btn btn-primary">Send Mail</button>
+            <br /><br />
+            <div>
+              <h6>{{ mail_msg }}</h6>
+            </div>
           </form>
         </div>
       </div>
@@ -33,6 +37,7 @@ export default {
   data() {
     return {
       email: '',
+      mail_msg: '',
     };
   },
   methods: {
@@ -43,7 +48,7 @@ export default {
       };
       this.sendResetMail(data).then((res) => {
         if (res.data.success) {
-          this.$router.push('login');
+          this.mail_msg = res.data.msg;
         }
       });
     },

@@ -7,7 +7,7 @@
           <h4>Reset password</h4>
         </div>
         <div class="card-body">
-          <form @submit.prevent="resetPassword">
+          <form @submit.prevent="resetUserPassword">
             <div class="form-group">
               <label for="password">Password</label>
               <input
@@ -52,16 +52,16 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['sendResetMail']),
-    resetPassword() {
+    ...mapActions(['resetPassword']),
+    resetUserPassword() {
       let resetData = {
-        token: this.username,
+        token: this.token,
         password: this.password,
         confirm_password: this.confirm_password,
       };
-      this.sendResetMail(resetData).then((res) => {
+      this.resetPassword(resetData).then((res) => {
         if (res.data.success) {
-          this.$router.push('login');
+          this.$router.push('/login');
         }
       });
     },
