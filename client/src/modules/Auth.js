@@ -30,7 +30,7 @@ const actions = {
   async login({ commit }, user) {
     commit('auth_request');
     try {
-      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/login', user);
+      let res = await axios.post('/api/users/login', user);
       if (res.data.success) {
         const token = res.data.token;
         const user = res.data.user;
@@ -49,7 +49,7 @@ const actions = {
   async register({ commit }, userData) {
     try {
       commit('register_request');
-      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/register', userData);
+      let res = await axios.post('/api/users/register', userData);
       if (res.data.success !== undefined) {
         commit('register_success');
       }
@@ -61,7 +61,7 @@ const actions = {
   // Get the user profile
   async getProfile({ commit }) {
     commit('profile_request');
-    let res = await axios.get(process.env.VUE_APP_API_URL + '/users/profile');
+    let res = await axios.get('/api/users/profile');
     commit('user_profile', res.data.user);
     return res;
   },
@@ -69,7 +69,7 @@ const actions = {
   async sendResetMail({ commit }, resetData) {
     try {
       commit('pwresetmail_request');
-      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/forgot', resetData);
+      let res = await axios.post('/api/users/forgot', resetData);
       if (res.data.success !== undefined) {
         commit('pwresetmail_success');
       }
@@ -82,7 +82,7 @@ const actions = {
   async resetPassword({ commit }, passwordData) {
     try {
       commit('passwordreset_request');
-      let res = await axios.post(process.env.VUE_APP_API_URL + '/users/reset', passwordData);
+      let res = await axios.post('/api/users/reset', passwordData);
       if (res.data.success !== undefined) {
         commit('passwordreset_success');
       }
